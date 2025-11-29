@@ -1,0 +1,64 @@
+public class PCB {
+     
+    public int pid;       
+    public int b;          
+    public int p;          
+    public int memory;     
+    
+     
+    public int wt;         
+    public int tt;         
+    public int arrivalTime; 
+    public String state;   
+    
+    public PCB(int pid, int burst, int priority, int memory) {
+        this.pid = pid;
+        this.b = burst;
+        this.p = priority;
+        this.memory = memory;
+        this.arrivalTime = 0;
+        this.state = "NEW";
+        this.wt = 0;
+        this.tt = 0;
+    }
+    
+    
+    public PCB() {
+       
+    }
+    
+
+    public int getPid() { return pid; }
+    public void setPid(int pid) { this.pid = pid; }
+    
+    public int getBurst() { return b; }
+    public void setBurst(int burst) { this.b = burst; }
+    
+    public int getPriority() { return p; }
+    public void setPriority(int priority) { this.p = priority; }
+    
+    public int getMemory() { return memory; }
+    public void setMemory(int memory) { this.memory = memory; }
+    
+    public int getWaitingTime() { return wt; }
+    public void setWaitingTime(int waitingTime) { this.wt = waitingTime; }
+    
+    public int getTurnaroundTime() { return tt; }
+    public void setTurnaroundTime(int turnaroundTime) { this.tt = turnaroundTime; }
+    
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+    
+    @Override
+    public String toString() {
+        return "PCB{" +
+                "pid=" + pid +
+                ", burst=" + b +
+                ", priority=" + p +
+                ", memory=" + memory +
+                ", waitingTime=" + wt +
+                ", turnaroundTime=" + tt +
+                ", state='" + state + '\'' +
+                '}';
+    }
+}
