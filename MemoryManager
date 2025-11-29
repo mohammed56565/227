@@ -1,0 +1,65 @@
+package csc227.project;
+
+public class MemoryManager {
+    private int totalMemory;
+    private int availableMemory;
+    
+    public MemoryManager() {
+        this.totalMemory = 2048;  
+        this.availableMemory = 2048;
+    }
+    
+    public MemoryManager(int totalMemory) {
+        this.totalMemory = totalMemory;
+        this.availableMemory = totalMemory;
+    }
+    
+    public boolean allocateMemory(int size) {
+        if (size <= availableMemory) {
+            availableMemory -= size;
+            System.out.println("Memory allocated: " + size + "MB. Available: " + availableMemory + "MB");
+            return true;
+        }
+        System.out.println("Memory allocation failed: " + size + "MB requested, " + availableMemory + "MB available");
+        return false;
+    }
+    
+    public void releaseMemory(int size) {
+        availableMemory += size;
+        if (availableMemory > totalMemory) {
+            availableMemory = totalMemory;
+        }
+        System.out.println("Memory released: " + size + "MB. Available: " + availableMemory + "MB");
+    }
+    
+    public boolean canAllocate(int size) {
+        return size <= availableMemory;
+    }
+    
+    // دالة الحصول على الذاكرة المتاحة
+    public int getAvailableMemory() {
+        return availableMemory;
+    }
+    
+    public int getTotalMemory() {
+        return totalMemory;
+    }
+    
+    public int getUsedMemory() {
+        return totalMemory - availableMemory;
+    }
+    
+    public void printMemoryStatus() {
+        System.out.println("=== Memory Status ===");
+        System.out.println("Total Memory: " + totalMemory + "MB");
+        System.out.println("Available Memory: " + availableMemory + "MB");
+        System.out.println("Used Memory: " + getUsedMemory() + "MB");
+        System.out.println("=====================");
+    }
+    
+   
+    public void resetMemory() {
+        availableMemory = totalMemory;
+        System.out.println("Memory reset to: " + totalMemory + "MB");
+    }
+}
