@@ -1,105 +1,142 @@
 public class Algorithms {
 
-	
-	
-	public void sjf (PCB[] list) {
-		
-		for (int i = 0; i < list.length - 1; i++) {
-		    for (int j = i + 1; j < list.length; j++) {
-		        if (list[j].b < list[i].b) {
-		            PCB t = list[i];
-		            list[i] = list[j];
-		            list[j] = t;
-		        }
-		    }
-		}
-		
-		int ct = 0;
-		System.out.println("sjf");
-		for (int i = 0; i < list.length; i++) {
-		    PCB p = list[i];
-		    System.out.println("P" + p.pid + " starts at " + ct);
-	        p.wt = ct;
-	        ct += p.b;
-	        p.tt = ct;
-	        System.out.println("P" + p.pid + " finishes at " + ct);
-	       
-		
-	}
-		Averages(list);
+    private int MP; 
 
+    public Algorithms(int MP) {
+        this.MP = MP;
+    }
+
+    public void sjf(PCB[] list) {
+
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = i + 1; j < list.length; j++) {
+                if (list[j].b < list[i].b) {
+                    PCB t = list[i];
+                    list[i] = list[j];
+                    list[j] = t;
+                }
+            }
+        }
+
+        int ct = 0;
+        System.out.println("SJF");
+
+        for (int i = 0; i < list.length; i++) {
+
+            PCB p = list[i];
+
+            System.out.println("P" + p.pid + " starts at " + ct);
+            p.wt = ct;
+            ct += p.b;
+            p.tt = ct;
+            System.out.println("P" + p.pid + " finishes at " + ct);
+
+            for (int k = i + 1; k < list.length; k++) {
+                int waiting = ct;
+                if (waiting > MP) {
+                    System.out.println("Starvation detected for P" + list[k].pid);
+                }
+            }
+        }
+
+        Averages(list);
+    }
+
+    public void rr(PCB[] list, int q) {
+
+        int r[] = new int[list.length];
+        int d = 0;
+
+        for (int i = 0; i < list.length; i++) {
+            r[i] = list[i].b;
+        }
+
+        int ct = 0;
+        System.out.println("RR");
+
+        while (d < list.length) {
+            for (int i = 0; i < list.length; i++) {
+
+                if (r[i] > 0) {
+
+                    int e = (r[i] < q ? r[i] : q);
+
+                    System.out.println("P" + list[i].pid + " runs " + e + " ms");
+
+                    r[i] -= e;
+                    ct += e;
+
+                    System.out.println("Remaining for P" + list[i].pid + " = " + r[i]);
+
+                    if (r[i] == 0) {
+                        list[i].tt = ct;
+                        d++;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < list.length; i++) {
+            list[i].wt = list[i].tt - list[i].b;
+        }
+
+        Averages(list);
+    }
+
+    public void Priority(PCB[] list) {
+
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = i + 1; j < list.length; j++) {
+                if (list[j].p > list[i].p) {
+                    PCB temp = list[i];
+                    list[i] = list[j];
+                    list[j] = temp;
+                }
+            }
+        }
+
+        int ct = 0;
+        System.out.println("Priority");
+
+        for (int i = 0; i < list.length; i++) {
+
+            PCB p = list[i];
+
+            System.out.println("P" + p.pid + " starts at " + ct);
+            p.wt = ct;
+            ct += p.b;
+            p.tt = ct;
+            System.out.println("P" + p.pid + " finishes at " + ct);
+
+            for (int k = i + 1; k < list.length; k++) {
+
+                int waiting = ct;
+
+                if (waiting > MP) {
+                    System.out.println("Starvation detected for P" + list[k].pid);
+
+                    list[k].p++;
+
+                    System.out.println("Aging applied → P" + list[k].pid
+                                       + " new priority = " + list[k].p);
+                }
+            }
+        }
+
+        Averages(list);
+    }
+
+    public void Averages(PCB[] list) {
+
+        double w = 0, t = 0;
+
+        for (int i = 0; i < list.length; i++) {
+            w += list[i].wt;
+            t += list[i].tt;
+        }
+
+        System.out.println("Average waiting time: " + (w / list.length));
+        System.out.println("Average turnaround time: " + (t / list.length));
+    }
 }
-	public void rr(PCB[] list, int q) {
-		int r[] = new int[list.length];
-		int d = 0;
-		for (int i = 0; i < list.length; i++) {
-		    r[i] = list[i].b;
-		    }
-		int ct = 0;
-		System.out.println("RR");
-		while (d < list.length) {
-			for (int i = 0; i < list.length; i++) {
-				if (r[i] > 0) { 
-					int e;
-					if (r[i] < q) {
-					    e = r[i];
-					} else {
-					    e = q;
-					}
-					System.out.println("P" + list[i].pid + " runs " + e + " ms");
-					r[i] -= e;
-					ct += e;
-					if (r[i] == 0) {
-					    list[i].tt = ct;
-					    d++;
-					}}}}
-					for (int i = 0; i < list.length; i++) {
-					    list[i].wt = list[i].tt - list[i].b;
-					}
-					Averages(list);
 
-				}
-					
-	
-	public void Priority(PCB[] list) {
-		for (int i = 0; i < list.length - 1; i++) {
-		    for (int j = i + 1; j < list.length; j++) {
-		        if (list[j].p > list[i].p) {
-		            PCB temp = list[i];
-		            list[i] = list[j];
-		            list[j] = temp; }}}
-		int ct = 0;
-		System.out.println("Priority ");
-		
-		for (int i = 0; i < list.length; i++) {
-		    PCB p = list[i];
-		    System.out.println("P" + p.pid + " starts at " + ct);
-		    p.wt = ct;
-		    ct += p.b;
-		    p.tt = ct;
-		    System.out.println("P" + p.pid + " finishes at " + ct);
-		    
-		
-		
-		}
-		
-		Averages(list);
-	}
-	
-	public void Averages(PCB[] list) {
-		double w = 0, t = 0;
-		
-		for (int i = 0; i < list.length; i++) {
-		    w = w + list[i].wt;
-		    t = t + list[i].tt;
-	
-
-	}
-		System.out.println("Average waiting time: " + (w / list.length));
-	    System.out.println("Average turnaround time: " + (t / list.length));
-				
-}
-	
-
-}
-	
